@@ -129,6 +129,8 @@
         </style>
         <!-- <script src="http://192.168.0.109:8080/geoserver/openlayers3/ol.js" type="text/javascript"></script> -->
         <script src="/privateOpenlayer_IndoorMap/openlayer/ol.js" type="text/javascript"></script>
+        <script src="/privateOpenlayer_IndoorMap/sxkeda/marker.js" type="text/javascript"></script>
+        
         <title>OpenLayers map preview</title>
     </head>
     <body>
@@ -314,12 +316,26 @@
                     units : 'm',
                     axisOrientation : 'neu'
                 });
+                
+                //添加标签
+                var iconFeature = new ol.Feature(new ol.geom.Point([1713, -1966]));
+                iconFeature.set('style', createStyle("/privateOpenlayer_IndoorMap/sxkeda/resource/icon/icon.png", undefined));
+
                 var map = new ol.Map({
                     controls : ol.control.defaults({
                         attribution : false
                     }).extend([mousePositionControl]),
                     target : 'map',
-                    layers : [untiled, tiled, tiledCanWalk, tiledDesktop, tiledOther],
+                    layers : [untiled, tiled, tiledCanWalk, tiledDesktop, tiledOther
+                    , new ol.layer.Vector({
+                        style : function(feature) {
+                            return feature.get('style');
+                        },
+                        source : new ol.source.Vector({
+                            features : [iconFeature]
+                        })
+                    })
+                    ],
                     view : new ol.View({
                         projection : projection
                     })
