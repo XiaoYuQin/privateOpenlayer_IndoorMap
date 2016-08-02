@@ -339,9 +339,25 @@
 					axisOrientation : 'neu'
 				});
 
-			
+				//添加标签
+				var iconFeature = new ol.Feature(new ol.geom.Point([1713, -1966]));
+				iconFeature.set('style', createStyle("/privateOpenlayer_IndoorMap/sxkeda/resource/icon/icon.png", undefined));
+				// var source =  new ol.source.Vector();
+				var vectorLayar = new ol.layer.Vector(
+				{
+					style : function(feature)
+					{
+						return feature.get('style');
+					},
+					source : new ol.source.Vector(
+					{
+						features : [iconFeature]
+					})
+				});
 
-
+				var iconFeature1 = new ol.Feature(new ol.geom.Point([1713, -1566]));
+				iconFeature1.set('style', createStyle("/privateOpenlayer_IndoorMap/sxkeda/resource/icon/icon.png", undefined));
+				vectorLayar.getSource().addFeature(iconFeature1);
 
 				var map = new ol.Map(
 				{
@@ -354,13 +370,13 @@
 					view : new ol.View(
 					{
 						projection : projection,
-                        // center: [100, -100],
-                        // zoom: 5
+						// center: [100, -100],
+						// zoom: 5
 					})
 				});
 				map.getView().on('change:resolution', function(evt)
 				{
-				    debug.i("change:resolution");
+					debug.i("change:resolution");
 					var resolution = evt.target.get('resolution');
 					var units = map.getView().getProjection().getUnits();
 					var dpi = 25.4 / 0.28;
@@ -557,8 +573,9 @@
 					}
 					map.updateSize()
 				}
-                handleDynamicData(map);
-                handleTrafficLight(map);
+
+				handleDynamicData(map);
+				handleTrafficLight(map);
             </script>
     </body>
 </html>
