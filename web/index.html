@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+        <!-- <link rel="stylesheet" href="file:///android_asset/ol.css" type="text/css"> -->
+        <link rel="stylesheet" href="ol.css" type="text/css">
+
+		<!-- <script type="text/javascript" src="file:///android_asset/jquery-1.8.3.js"></script> -->
+        <!-- <script src="file:///android_asset/ol.js" type="text/javascript"></script> -->
+        <script type="text/javascript" src="jquery-1.8.3.js"></script>
+        <script src="ol.js" type="text/javascript"></script>
+        <!-- <title>OpenLayers map preview</title> -->
+    </head>
+    <body>
+
+        <div id="map">
+<!--             <div class="ol-toggle-options ol-unselectable">
+                <a title="Toggle options toolbar" onClick="toggleControlPanel()" href="#toggle">...</a>
+            </div> -->
+        </div>
+        <!-- <button onclick="get()">获得位置</button> -->
+<!--         <div id="wrapper">
+            <div id="location"></div>
+            <div id="scale"></div>
+            <div id="nodelist">
+                <em>Click on the map to get feature info</em>
+            </div>
+        </div> -->
+            <script type="text/javascript">
+				var pureCoverage = false;
+				var arry = new Array();
+				fillArray();
+				console.log("Hello World");
+				// if this is just a coverage or a group of them, disable a few items,
+				// and default to jpeg format
+				var format = 'image/png';
+				var bounds = [412.29087560646866, -3567.4348720330754, 3823.043098107759, -511.8054809570278];
+				var carIndex = 1;
+				if (pureCoverage)
+				{
+					document.getElementById('filterType').disabled = true;
+					document.getElementById('filter').disabled = true;
+					document.getElementById('antialiasSelector').disabled = true;
+					document.getElementById('updateFilterButton').disabled = false;
+					document.getElementById('resetFilterButton').disabled = true;
+					document.getElementById('jpeg').selected = true;
+					format = "image/jpeg";
+				}
+				/********************************************放置图片*********************************************/
+
+				console.info("load png");
+				var iconFeature = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -148]),
+					name : 'Null Island'
+					// population : 4000,
+					// rainfall : 500
+				});
+
+				var iconStyle = new ol.style.Style(
+				{
+					image : new ol.style.Icon(/** @type {olx.style.IconOptions} */(
+						{
+							anchor : [1, 1],
+							anchorXUnits : 'pixels',
+							anchorYUnits : 'fraction',
+							opacity : 10,
+							rotateWithView:true,
+							src : 'icon/icon1.png'
+						}))
+				});
+				console.info("iconFeature.setStyle(iconStyle)");
+				iconStyle.getImage().setRotation(60/60);
+				iconFeature.setStyle(iconStyle);
+
+
+
+				var iconFeature1 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -158]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+
+				var point1 =new Array()
+				point1[0] = 100;
+				point1[1] = 100;
+				var point1old =new Array()
+				var point2 =new Array()
+				var point3 =new Array()
+				var point4 =new Array()
+				var point5 =new Array()
+				var point6 =new Array()
+				var point7 =new Array()
+				var point8 =new Array()
+				var point9 =new Array()
+
+				var iconStyle1 = new ol.style.Style(
+				{
+					image : new ol.style.Icon(/** @type {olx.style.IconOptions} */(
+						{
+							anchor : [0.5, 0.5],
+							anchorXUnits : 'pixels',
+							anchorYUnits : 'fraction',
+							opacity : 1,
+							rotateWithView:false,
+							src : 'icon/icon1.png'
+						}))
+				});
+				// iconFeature1.setStyle(iconStyle1);
+
+				var iconFeature2 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -178]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+				var iconFeature3 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -188]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+				var iconFeature4 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -198]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+				var iconFeature5 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -108]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+				var iconFeature6 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -118]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+				var iconFeature7 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -128]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+				var iconFeature8 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -138]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+				var iconFeature9 = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -98]),
+					name : 'iconFeature1'
+					// population : 4000,
+					// rainfall : 500
+				});
+
+
+
+				var vectorSource = new ol.source.Vector(
+				{
+					features : [iconFeature]
+				});
+
+				var vectorLayer = new ol.layer.Vector(
+				{
+					source : vectorSource
+				});
+
+
+
+
+				/*****************************************************************************************************/
+
+				var mousePositionControl = new ol.control.MousePosition(
+				{
+					// className : 'custom-mouse-position',
+					// target : document.getElementById('location'),
+					// coordinateFormat : ol.coordinate.createStringXY(5),
+					// undefinedHTML : '&nbsp;'
+				});
+				// var untiled = new ol.layer.Image(
+				// {
+				// 	source : new ol.source.ImageWMS(
+				// 	{
+				// 		ratio : 1,
+				// 		url : 'http://192.168.1.33:8080/geoserver/yanfabu_map/wms',
+				// 		params :
+				// 		{
+				// 			'FORMAT' : format,
+				// 			'VERSION' : '1.1.1',
+				// 			STYLES : '',
+				// 			LAYERS : 'yanfabu_map:yanfabu_map',
+				// 		}
+				// 	})
+				// });
+				// var tiled = new ol.layer.Tile(15935104200
+				// {
+				// 	visible : false,
+				// 	source : new ol.source.TileWMS(
+				// 	{
+				// 		url : 'http://192.168.1.33:8080/geoserver/yanfabu_map/wms',
+				// 		params :
+				// 		{
+				// 			'FORMAT' : format,
+				// 			'VERSION' : '1.1.1',
+				// 			tiled : true,
+				// 			STYLES : '',
+				// 			LAYERS : 'yanfabu_map:yanfabu_map',
+				// 		}
+				// 	})
+				// });
+				//
+				//
+    var untiled = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+          ratio: 1,
+          url: 'http://192.168.1.33:8080/geoserver/wms',
+          params: {'FORMAT': format,
+                   'VERSION': '1.1.1',
+                STYLES: '',
+                LAYERS: 'kdzk_office_map',
+          }
+        })
+      });
+      var tiled = new ol.layer.Tile({
+        visible: false,
+        source: new ol.source.TileWMS({
+          url: 'http://192.168.1.33:8080/geoserver/wms',
+          params: {'FORMAT': format,
+                   'VERSION': '1.1.1',
+                   tiled: true,
+                STYLES: '',
+                LAYERS: 'kdzk_office_map',
+          }
+        })
+      });
+
+				var projection = new ol.proj.Projection(
+				{
+					code : 'EPSG:54012',
+					units : 'm',
+					axisOrientation : 'neu'
+				});
+				var map = new ol.Map(
+				{
+					controls : ol.control.defaults(
+					{
+						attribution : false
+					}),
+					target : 'map',
+					layers : [untiled, tiled, vectorLayer],
+					view : new ol.View(
+					{
+						projection : projection,
+						zoom:17,
+						center:[152, -148]
+					})
+					// view: view
+				});
+				map.getView().on('change:resolution', function(evt)
+				{
+					var resolution = evt.target.get('resolution');
+					var units = map.getView().getProjection().getUnits();
+					var dpi = 25.4 / 0.28;
+					var mpu = ol.proj.METERS_PER_UNIT[units];
+					var scale = resolution * mpu * 39.37 * dpi;
+					if (scale >= 9500 && scale <= 950000)
+					{
+						scale = Math.round(scale / 1000) + "K";
+					}
+					else
+					if (scale >= 950000)
+					{
+						scale = Math.round(scale / 1000000) + "M";
+					}
+					else
+					{
+						scale = Math.round(scale);
+					}
+					moveToPoint(map,true);
+					// document.getElementById('scale').innerHTML = "Scale = 1 : " + scale;
+				});
+				// map.getView().fit(bounds, map.getSize());
+
+
+				map.on('singleclick', function(evt)
+				{
+					moveToPoint(map,true);
+					// document.getElementById('nodelist').innerHTML = "Loading... please wait...";
+					var view = map.getView();
+					var viewResolution = view.getResolution();
+					var source = untiled.get('visible') ? untiled.getSource() : tiled.getSource();
+					var url = source.getGetFeatureInfoUrl(evt.coordinate, viewResolution, view.getProjection(),
+					{
+						'INFO_FORMAT' : 'text/html',
+						'FEATURE_COUNT' : 50
+					});
+					if (url)
+					{
+						// document.getElementById('nodelist').innerHTML = '<iframe seamless src="' + url + '"></iframe>';
+					}
+				});
+
+				// sets the chosen WMS version
+				function setWMSVersion(wmsVersion)
+				{
+					map.getLayers().forEach(function(lyr)
+					{
+						lyr.getSource().updateParams(
+						{
+							'VERSION' : wmsVersion
+						});
+					});
+				}
+
+				// Tiling mode, can be 'tiled' or 'untiled'
+				function setTileMode(tilingMode)
+				{
+					if (tilingMode == 'tiled')
+					{
+						untiled.set('visible', false);
+						tiled.set('visible', true);
+					}
+					else
+					{
+						tiled.set('visible', false);
+						untiled.set('visible', true);
+					}
+				}
+
+				function setAntialiasMode(mode)
+				{
+					map.getLayers().forEach(function(lyr)
+					{
+						lyr.getSource().updateParams(
+						{
+							'FORMAT_OPTIONS' : 'antialias:' + mode
+						});
+					});
+				}
+
+				// changes the current tile format
+				function setImageFormat(mime)
+				{
+					map.getLayers().forEach(function(lyr)
+					{
+						lyr.getSource().updateParams(
+						{
+							'FORMAT' : mime
+						});
+					});
+				}
+
+				function setStyle(style)
+				{
+					map.getLayers().forEach(function(lyr)
+					{
+						lyr.getSource().updateParams(
+						{
+							'STYLES' : style
+						});
+					});
+				}
+
+				function setWidth(size)
+				{
+					var mapDiv = document.getElementById('map');
+					var wrapper = document.getElementById('wrapper');
+
+					if (size == "auto")
+					{
+						// reset back to the default value
+						mapDiv.style.width = null;
+						wrapper.style.width = null;
+					}
+					else
+					{
+						mapDiv.style.width = size + "px";
+						wrapper.style.width = size + "px";
+					}
+					// notify OL that we changed the size of the map div
+					map.updateSize();
+				}
+
+				function setHeight(size)
+				{
+					var mapDiv = document.getElementById('map');
+					if (size == "auto")
+					{
+						// reset back to the default value
+						mapDiv.style.height = null;
+					}
+					else
+					{
+						mapDiv.style.height = size + "px";
+					}
+					// notify OL that we changed the size of the map div
+					map.updateSize();
+				}
+
+				function updateFilter()
+				{
+					if (pureCoverage)
+					{
+						return;
+					}
+					var filterType = document.getElementById('filterType').value;
+					var filter = document.getElementById('filter').value;
+					// by default, reset all filters
+					var filterParams =
+					{
+						'FILTER' : null,
+						'CQL_FILTER' : null,
+						'FEATUREID' : null
+					};
+					if (filter.replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "")
+					{
+						if (filterType == "cql")
+						{
+							filterParams["CQL_FILTER"] = filter;
+						}
+						if (filterType == "ogc")
+						{
+							filterParams["FILTER"] = filter;
+						}
+						if (filterType == "fid")
+							filterParams["FEATUREID"] = filter;
+					}
+					// merge the new filter definitions
+					map.getLayers().forEach(function(lyr)
+					{
+						lyr.getSource().updateParams(filterParams);
+					});
+				}
+
+				function resetFilter()
+				{
+					if (pureCoverage)
+					{
+						return;
+					}
+					document.getElementById('filter').value = "";
+					updateFilter();
+				}
+
+				// shows/hide the control panel
+				function toggleControlPanel()
+				{
+					var toolbar = document.getElementById("toolbar");
+					if (toolbar.style.display == "none")
+					{
+						toolbar.style.display = "block";
+					}
+					else
+					{
+						toolbar.style.display = "none";
+					}
+					map.updateSize()
+				}
+
+				/********************************************Ð¡Çò×ªÈ¦*********************************************/
+				var imageStyle = new ol.style.Circle(
+				{
+					radius : 10,
+					snapToPixel : false,
+					fill : new ol.style.Fill(
+					{
+						color : 'yellow'
+					}),
+					stroke : new ol.style.Stroke(
+					{
+						color : 'red',
+						width : 1
+					})
+				});
+
+				var headInnerImageStyle = new ol.style.Style(
+				{
+					image : new ol.style.Circle(
+					{
+						radius : 2,
+						snapToPixel : false,
+						fill : new ol.style.Fill(
+						{
+							color : 'blue'
+						})
+					})
+				});
+
+				var headOuterImageStyle = new ol.style.Circle(
+				{
+					radius : 5,
+					snapToPixel : false,
+					fill : new ol.style.Fill(
+					{
+						color : 'black'
+					})
+				});
+
+				var n = 1;
+				var omegaTheta = 300;
+				// Rotation period in ms
+				var R = 200;
+				var r = 200;
+				var p = 200;
+				var xxxxx = 0,yyyyyy=0;
+				var offset = new Array;
+				map.on('postcompose', function(event)
+				{
+					var vectorContext = event.vectorContext;
+					var frameState = event.frameState;
+					var speed = frameState.time/omegaTheta;
+					// var theta = 2 * Math.PI * frameState.time / omegaTheta;
+					// var coordinates = [];
+					// var i;
+					// xxxxx = xxxxx+1;
+					// yyyyyy = yyyyyy+1;
+					// console.info(xxxxx+"  "+yyyyyy);
+					// iconFeature.setGeometry(new ol.geom.Point([1000+xxxxx, -1000+yyyyyy]));
+
+					// console.info("point1="+point1);
+					// console.info("frameState.time = "+frameState.time);
+					// console.info("speed = "+speed);
+
+					// xxxxx++;
+					// if(xxxxx<30)
+					// {
+						// console.info("xxxxx = "+xxxxx);
+						
+						for(var i=0;i<10;i++)
+						{
+							if(arry[i].resfhCount > 0)
+							{
+								arry[i].old_x = arry[i].old_x+arry[i].offset_x;
+								arry[i].old_y = arry[i].old_y+arry[i].offset_y;
+								arry[i].resfhCount --;
+								arry[i].iconFeature.setGeometry(new ol.geom.Point([arry[i].old_x,arry[i].old_y]));	
+								
+							}		
+							vectorContext.drawFeature(arry[i].iconFeature, iconStyle1);
+						}
+						// console.info("x = "+arry[1].old_x+" y ="+arry[1].old_y);
+						// point1old[0] = parseFloat(point1old[0])+parseFloat(offset[0]);
+						// point1old[1] = parseFloat(point1old[1])+parseFloat(offset[1]);
+						// console.info("setGeometry["+point1old[0]+","+point1old[1]+"]");
+						// iconFeature1.setGeometry(new ol.geom.Point([point1old[0],point1old[1]]));
+					// }
+						// vectorContext.drawFeature(iconFeature1, iconStyle1);
+
+
+
+
+
+					// iconFeature2.setGeometry(point2);
+					// vectorContext.drawFeature(iconFeature2, iconStyle1);
+
+					// iconFeature3.setGeometry(point3);
+					// vectorContext.drawFeature(iconFeature3, iconStyle1);
+
+					// iconFeature4.setGeometry(point4);
+					// vectorContext.drawFeature(iconFeature4, iconStyle1);
+
+					// iconFeature5.setGeometry(point5);
+					// vectorContext.drawFeature(iconFeature5, iconStyle1);
+
+					// iconFeature6.setGeometry(point6);
+					// vectorContext.drawFeature(iconFeature6, iconStyle1);
+
+					// iconFeature7.setGeometry(point7);
+					// vectorContext.drawFeature(iconFeature7, iconStyle1);
+
+					// iconFeature8.setGeometry(point8);
+					// vectorContext.drawFeature(iconFeature8, iconStyle1);
+
+					// iconFeature9.setGeometry(point9);
+					// vectorContext.drawFeature(iconFeature9, iconStyle1);
+
+					// console.info(map.getView().getCenter());
+
+					// for ( i = 0; i < n; ++i)
+					// {
+					// 	// var t = theta + 2 * Math.PI * i / n;
+					// 	// var x = (R + r) * Math.cos(t) + p * Math.cos((R + r) * t / r);
+					// 	// var y = (R + r) * Math.sin(t) + p * Math.sin((R + r) * t / r);
+					// 	coordinates.push([1569, -1259]);
+					// }
+					// vectorContext.setImageStyle(imageStyle);
+					// vectorContext.drawMultiPointGeometry(new ol.geom.MultiPoint(coordinates), null);
+
+					// var headPoint = new ol.geom.Point(coordinates[coordinates.length - 1]);
+					// var headFeature = new ol.Feature(headPoint);
+					// vectorContext.drawFeature(headFeature, headInnerImageStyle);
+
+					// vectorContext.setImageStyle(headOuterImageStyle);
+					// vectorContext.drawMultiPointGeometry(headPoint, null);
+
+					map.render();
+				});
+				map.render();
+				/*****************************************************************************************************/
+				// function success(response,status)
+				// {
+				// 	console.info(response);
+				// 	console.info(status);
+				// }
+				function get(){
+					// $('body').append('<scr'+'ipt src="http://192.168.1.33:5000/id_2_position?id=9"></sc'+'ript>');
+					ajax.abort();  //每次提交前, 先放弃上一次ajax的提交, 这样就不会同时有多个ajax正在请求, 卡死浏览器
+
+					ajax = $.ajax({
+						url: "http://192.168.1.33:5000/all_position"//请求的url
+						, async: false
+						, dataType : "jsonp"
+						//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+						, jsonp: "callback"
+						//自定义的jsonp回调函数名称"jsonpCallback"，返回的json也必须有这个函数名称
+						, jsonpCallback:"jsonpCallback"
+						// , complete:function( data, textStatus, jqXHR )
+						// {
+							// console.info(textStatus);
+							// if(textStatus == "success")
+							// {
+							// 	console.info(data);
+							// }
+						// }
+					});
+
+					// carIndex++;
+					// if(carIndex>9) carIndex=1;
+
+				}
+				function Points(id,x,y) {
+					this.id = id;
+					this.old_x = this.x;
+					this.old_y = this.y;
+					this.x = x;
+					this.y = y;
+					this.resfhCount = 0;
+					this.iconFeature = new ol.Feature(
+					{
+						geometry : new ol.geom.Point([152, -178]),
+						name : 'iconFeature'+id
+					});
+					this.offset_x = 0;
+					this.offset_y = 0;
+
+
+				}
+				var ajax = {
+					abort: function () {}   //定义一个空的方法, 是为了下面ajax.abort()不报错
+				};
+				function fillArray()
+				{
+					for(var i=0;i<10;i++)
+						arry.push(new Points(i,0,0));
+				}
+				function jsonpCallback(data) //回调函数
+				{
+				    console.log(carIndex); //
+					var pointx = jQuery.parseJSON(JSON.stringify(data));
+					console.info(pointx.values.length);
+
+					for(var i=0;i<pointx.values.length;i++)
+					{
+						console.info(i+"   x="+pointx.values[i].x+"  y="+pointx.values[i].y);
+
+						// arry[i].Points(i,pointx.values[i].x,pointx.values[i].y);
+						
+						arry[i].old_x = arry[i].x;
+						arry[i].old_y = arry[i].y;
+
+						arry[i].x = pointx.values[i].x;
+						arry[i].y = pointx.values[i].y;
+						console.info("old = "+arry[i].old_x+"  "+arry[i].old_y);
+						console.info("new = "+arry[i].x+"  "+arry[i].y);
+
+						if((arry[i].old_x != arry[i].x)||(arry[i].old_y != arry[i].y))
+						{
+							arry[i].offset_x = (arry[i].x-arry[i].old_x)/20;
+							arry[i].offset_y = (arry[i].y-arry[i].old_y)/20;
+							arry[i].resfhCount = 20;
+							// console.info("point1old["+arry[i].old_x+","+arry[i].old_y+"]");
+							console.info("offset["+arry[i].offset_x+","+arry[i].offset_y+"]");
+						}
+					}
+					xxxxx = 0;
+					console.info("arry[1] = "+arry[1].old_x+"  "+arry[1].old_y);
+
+ 					moveToPoint(map,false);
+					// console.info(pointx);
+					// console.info(pointx.x);
+					// console.info(pointx.y);
+
+
+					// point1old[0] = point1[0];
+					// point1old[1] = point1[1];
+
+					// point1[0] = pointx.x;
+					// point1[1] = pointx.y;
+					// if((point1old[0] != point1[0])||(point1old[1] != point1[1]))
+					// {
+
+
+					// 	offset[0] = (point1[0]-point1old[0])/30;
+					// 	offset[1] = (point1[1]-point1old[1])/30;
+					// 	console.info("point1old["+point1old[0]+","+point1old[1]+"]");
+					// 	console.info("offset["+offset[0]+","+offset[1]+"]");
+					// 	xxxxx = 0;
+					// 	// moveToPoint(map);
+					// }
+
+
+
+				  //   switch(carIndex)
+				  //   {
+						// case 1:
+						// 	point1[0] = pointx.x;
+						// 	point1[1] = pointx.y;
+						// 	console.info(point1);
+						// break;
+						// case 2:
+						// 	point2 = [pointx.x,pointx.y];
+						// break;
+						// case 3:
+						// 	point3 = [pointx.x,pointx.y];
+						// break;
+						// case 4:
+						// 	point4 = [pointx.x,pointx.y];
+						// break;
+						// case 5:
+						// 	point5 = [pointx.x,pointx.y];
+						// break;
+						// case 6:
+						// 	point6 = [pointx.x,pointx.y];
+						// break;
+						// case 7:
+						// 	point7 = [pointx.x,pointx.y];
+						// break;
+						// case 8:
+						// 	point8 = [pointx.x,pointx.y];
+						// break;
+						// case 9:
+						// 	point9 = [pointx.x,pointx.y];
+				  //   	break;
+				  //   }
+
+				}
+
+				function moveToPoint(map,refash)
+				{
+					if((arry[1].old_x != arry[1].x)||(arry[1].old_y != arry[1].y)||refash == true)
+					{					
+						var london = [arry[1].x, arry[1].y];
+						console.info("moveToPoint");
+						var pan = ol.animation.pan({
+							duration: 1000,
+							source: (map.getView().getCenter())
+						});
+						console.info(map.getView().getCenter());
+						map.beforeRender(pan);
+						map.getView().setCenter(london);
+					}
+				}
+
+				var t2 = window.setInterval("get()",1000);
+
+
+
+            </script>
+    </body>
+</html>

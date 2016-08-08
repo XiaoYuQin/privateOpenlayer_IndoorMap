@@ -1,5 +1,7 @@
+
 var debug = new Function;  
 debug.i = function(str){  
+    document.getElementById('teeeeest1').innerHTML = "2222222222222222";
     console.info(str);
 };
 debug.w = function(str){  

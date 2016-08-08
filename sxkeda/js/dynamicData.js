@@ -1,6 +1,6 @@
-var imageStyle = new ol.style.Style(
+function handleDynamicData(map)
 {
-	image : new ol.style.Circle(
+	var imageStyle = new ol.style.Circle(
 	{
 		radius : 5,
 		snapToPixel : false,
@@ -13,25 +13,22 @@ var imageStyle = new ol.style.Style(
 			color : 'red',
 			width : 1
 		})
-	})
-});
+	});
 
-var headInnerImageStyle = new ol.style.Style(
-{
-	image : new ol.style.Circle(
+	var headInnerImageStyle = new ol.style.Style(
 	{
-		radius : 2,
-		snapToPixel : false,
-		fill : new ol.style.Fill(
+		image : new ol.style.Circle(
 		{
-			color : 'blue'
+			radius : 2,
+			snapToPixel : false,
+			fill : new ol.style.Fill(
+			{
+				color : 'blue'
+			})
 		})
-	})
-});
+	});
 
-var headOuterImageStyle = new ol.style.Style(
-{
-	image : new ol.style.Circle(
+	var headOuterImageStyle = new ol.style.Circle(
 	{
 		radius : 5,
 		snapToPixel : false,
@@ -39,25 +36,16 @@ var headOuterImageStyle = new ol.style.Style(
 		{
 			color : 'black'
 		})
-	})
-});
+	});
 
-function handleDynamicData(map)
-{
-	var n = 100;
+	var n = 2;
 	var omegaTheta = 30000;
 	// Rotation period in ms
-	// var R = 7e6;
-	// var r = 2e6;
-	// var p = 2e6;
-
 	var R = 200;
 	var r = 200;
 	var p = 0;
-
 	map.on('postcompose', function(event)
 	{
-		// debug.i("postcompose");
 		var vectorContext = event.vectorContext;
 		var frameState = event.frameState;
 		var theta = 2 * Math.PI * frameState.time / omegaTheta;
@@ -68,22 +56,19 @@ function handleDynamicData(map)
 			var t = theta + 2 * Math.PI * i / n;
 			var x = (R + r) * Math.cos(t) + p * Math.cos((R + r) * t / r);
 			var y = (R + r) * Math.sin(t) + p * Math.sin((R + r) * t / r);
-			// 1713, -1966
 			coordinates.push([x + 1713, y - 1966]);
 		}
-		// vectorContext.setStyle(imageStyle);
-		// vectorContext.drawGeometry(new ol.geom.MultiPoint(coordinates));
+		vectorContext.setImageStyle(imageStyle);
+		vectorContext.drawMultiPointGeometry(new ol.geom.MultiPoint(coordinates), null);
 
 		var headPoint = new ol.geom.Point(coordinates[coordinates.length - 1]);
+		var headFeature = new ol.Feature(headPoint);
+		vectorContext.drawFeature(headFeature, headInnerImageStyle);
 
-		vectorContext.setStyle(headOuterImageStyle);
-		vectorContext.drawGeometry(headPoint);
-
-		vectorContext.setStyle(headInnerImageStyle);
-		vectorContext.drawGeometry(headPoint);
+		vectorContext.setImageStyle(headOuterImageStyle);
+		vectorContext.drawMultiPointGeometry(headPoint, null);
 
 		map.render();
 	});
 	map.render();
 }
-
