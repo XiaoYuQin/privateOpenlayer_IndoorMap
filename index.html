@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+        <!-- <link rel="stylesheet" href="file:///android_asset/ol.css" type="text/css"> -->
+        <link type="text/css" rel="stylesheet" href="openlayer/ol.css" >
+
+        <!-- <script type="text/javascript" src="file:///android_asset/jquery-1.8.3.js"></script> -->
+        <!-- <script src="file:///android_asset/ol.js" type="text/javascript"></script> -->
+        <script type="text/javascript" src="jquery/jquery-1.8.3.js"></script>
+        <script type="text/javascript" src="openlayer/ol.js" ></script>
+        <!-- <title>OpenLayers map preview</title> -->
+
+        <style>
+			.ol-popup {
+				position: absolute;
+				background-color: #0099cc;
+				-webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+				filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+				padding: 10px;/*气泡大小*/
+				border-radius: 10px; /*圆弧弧度*/
+				border: 1px solid #cccccc; /*边框粗度和颜色*/
+				bottom: 12px;/*气泡上面弧度正方形距离底边的高度*/
+				left: -12px;/*气泡距离点击点的位置*/
+			}
+			.ol-popup:after, .ol-popup:before {
+				top: 100%; /*底部三角形的位置在整个气泡上的相对位置*/
+				border: solid transparent;
+				content: " ";
+				height: 0;
+				width: 0;
+				position: absolute;
+				pointer-events: none;
+			}
+			.ol-popup:after {
+				border-top-color: #0099cc;
+				border-width: 7px; /*底部三角形的尺寸*/
+				left: 18px;/*底部三角形的水平位置*/
+				margin-left: -10px;
+			}
+			.ol-popup:before {
+				border-top-color: #cccccc;
+				border-width: 8px;
+				left: 18px;
+				margin-left: -11px;
+			}
+			/*.ol-popup-closer {
+			 text-decoration: none;
+			 position: absolute;
+			 top: 2px;
+			 right: 8px;
+			 }
+			 .ol-popup-closer:after {
+			 content: "✖";
+			 }*/
+
+        </style>
+
+    </head>
+    <body>
+        <div id="popup1" class="ol-popup">
+            <div id="popup-content1"></div>
+        </div>
+        <div id="popup2" class="ol-popup">
+            <div id="popup-content2"></div>
+        </div>
+        <div id="popup3" class="ol-popup">
+            <div id="popup-content3"></div>
+        </div>
+        <div id="popup4" class="ol-popup">
+            <div id="popup-content4"></div>
+        </div>
+        <div id="popup5" class="ol-popup">
+            <div id="popup-content5"></div>
+        </div>
+        <div id="popup6" class="ol-popup">
+            <div id="popup-content6"></div>
+        </div>
+        <div id="popup7" class="ol-popup">
+            <div id="popup-content7"></div>
+        </div>
+        <div id="popup8" class="ol-popup">
+            <div id="popup-content8"></div>
+        </div>
+        <div id="popup9" class="ol-popup">
+            <div id="popup-content9"></div>
+        </div>
+        <div id="popup10" class="ol-popup">
+            <div id="popup-content10"></div>
+        </div>
+        <div id="map">
+            <!--             <div class="ol-toggle-options ol-unselectable">
+            <a title="Toggle options toolbar" onClick="toggleControlPanel()" href="#toggle">...</a>
+            </div> -->
+        </div>
+        <!-- <button onclick="get()">获得位置</button> -->
+        <!--         <div id="wrapper">
+        <div id="location"></div>
+        <div id="scale"></div>
+        <div id="nodelist">
+        <em>Click on the map to get feature info</em>
+        </div>
+        </div> -->
+        <script type="text/javascript">
+			var pureCoverage = false;
+			var arry = new Array();
+			/**
+			 * Elements that make up the popup.
+			 */
+			var container1 = document.getElementById('popup1');
+			var content1 = document.getElementById('popup-content1');
+			content1.innerHTML = '0';
+			content1.style.color = "#ffffff";
+			var container2 = document.getElementById('popup2');
+			var content2 = document.getElementById('popup-content2');
+			content2.innerHTML = '1';
+			content2.style.color = "#ffffff";
+			var container3 = document.getElementById('popup3');
+			var content3 = document.getElementById('popup-content3');
+			content3.innerHTML = '2';
+			content3.style.color = "#ffffff";
+			var container4 = document.getElementById('popup4');
+			var content4 = document.getElementById('popup-content4');
+			content4.innerHTML = '3';
+			content4.style.color = "#ffffff";
+			var container5 = document.getElementById('popup5');
+			var content5 = document.getElementById('popup-content5');
+			content5.innerHTML = '4';
+			content5.style.color = "#ffffff";
+			var container6 = document.getElementById('popup6');
+			var content6 = document.getElementById('popup-content6');
+			content6.innerHTML = '5';
+			content6.style.color = "#ffffff";
+			var container7 = document.getElementById('popup7');
+			var content7 = document.getElementById('popup-content7');
+			content7.innerHTML = '6';
+			content7.style.color = "#ffffff";
+			var container8 = document.getElementById('popup8');
+			var content8 = document.getElementById('popup-content8');
+			content8.innerHTML = '7';
+			content8.style.color = "#ffffff";
+			var container9 = document.getElementById('popup9');
+			var content9 = document.getElementById('popup-content9');
+			content9.innerHTML = '8';
+			content9.style.color = "#ffffff";
+			var container10 = document.getElementById('popup10');
+			var content10 = document.getElementById('popup-content10');
+			content10.innerHTML = '9';
+			content10.style.color = "#ffffff";
+			// var closer = document.getElementById('popup-closer');
+
+			/**
+			 * Add a click handler to hide the popup.
+			 * @return {boolean} Don't follow the href.
+			 */
+			// closer.onclick = function()
+			// {
+			// overlay.setPosition(undefined);
+			// closer.blur();
+			// return false;
+			// };
+
+			console.log("Hello World");
+			// if this is just a coverage or a group of them, disable a few items,
+			// and default to jpeg format
+			var format = 'image/png';
+			var bounds = [412.29087560646866, -3567.4348720330754, 3823.043098107759, -511.8054809570278];
+			var carIndex = 2;
+			if (pureCoverage)
+			{
+				document.getElementById('filterType').disabled = true;
+				document.getElementById('filter').disabled = true;
+				document.getElementById('antialiasSelector').disabled = true;
+				document.getElementById('updateFilterButton').disabled = false;
+				document.getElementById('resetFilterButton').disabled = true;
+				document.getElementById('jpeg').selected = true;
+				format = "image/jpeg";
+			}
+			/********************************************放置图片*********************************************/
+
+			console.info("load png");
+			var iconFeature = new ol.Feature(
+			{
+				geometry : new ol.geom.Point([152, -148]),
+				name : 'Null Island',
+				population : 4000,
+				rainfall : 500
+			});
+			var iconFeature1 = new ol.Feature(
+			{
+				geometry : new ol.geom.Point([152, -148]),
+				name : 'Null Island',
+				population : 4000,
+				rainfall : 500
+			});
+			var iconStyle = new ol.style.Style(
+			{
+				image : new ol.style.Icon(/** @type {olx.style.IconOptions} */(
+					{
+						anchor : [1, 1],
+						anchorXUnits : 'pixels',
+						anchorYUnits : 'fraction',
+						opacity : 10,
+						rotateWithView : true,
+						src : 'sxkeda/resource/icon/icon1.png'
+					}))
+			});
+			var iconStyleNoarrow = new ol.style.Style(
+			{
+				image : new ol.style.Icon(/** @type {olx.style.IconOptions} */(
+					{
+						// anchor : [1, 1],
+						// anchorXUnits : 'pixels',
+						// anchorYUnits : 'fraction',
+						// opacity : 10,
+						// rotateWithView:true,
+						// scale:0.5,
+						src : 'sxkeda/resource/icon/icon2.png'
+					}))
+			});
+			console.info("iconFeature.setStyle(iconStyle)");
+			// iconStyle.getImage().setRotation(45);
+			iconFeature.setStyle(iconStyle);
+			iconFeature1.setStyle(iconStyleNoarrow);
+			var vectorSource = new ol.source.Vector(
+			{
+				features : [iconFeature, iconFeature1]
+			});
+
+			var vectorLayer = new ol.layer.Vector(
+			{
+				source : vectorSource
+			});
+			/*****************************************************************************************************/
+
+			var mousePositionControl = new ol.control.MousePosition(
+			{
+				// className : 'custom-mouse-position',
+				// target : document.getElementById('location'),
+				// coordinateFormat : ol.coordinate.createStringXY(5),
+				// undefinedHTML : '&nbsp;'
+			});
+			/**
+			 * Create an overlay to anchor the popup to the map.
+			 */
+			var overlay1 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container1,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay2 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container2,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay3 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container3,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay4 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container4,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay5 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container5,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay6 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container6,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay7 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container7,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay8 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container8,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay9 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container9,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var overlay10 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
+				{
+					element : container10,
+					autoPan : true,
+					autoPanAnimation :
+					{
+						duration : 250
+					}
+				}));
+			var untiled = new ol.layer.Image(
+			{
+				source : new ol.source.ImageWMS(
+				{
+					ratio : 1,
+					url : 'http://192.168.1.33:8080/geoserver/wms',
+					params :
+					{
+						'FORMAT' : format,
+						'VERSION' : '1.1.1',
+						STYLES : '',
+						LAYERS : 'kdzk_office_map',
+					}
+				})
+			});
+			var tiled = new ol.layer.Tile(
+			{
+				visible : false,
+				source : new ol.source.TileWMS(
+				{
+					url : 'http://192.168.1.33:8080/geoserver/wms',
+					params :
+					{
+						'FORMAT' : format,
+						'VERSION' : '1.1.1',
+						tiled : true,
+						STYLES : '',
+						LAYERS : 'kdzk_office_map',
+					}
+				})
+			});
+			fillArray();
+			var projection = new ol.proj.Projection(
+			{
+				code : 'EPSG:54012',
+				units : 'm',
+				axisOrientation : 'neu'
+			});
+			var map = new ol.Map(
+			{
+				controls : ol.control.defaults(
+				{
+					attribution : false
+				}),
+				target : 'map',
+				layers : [untiled, tiled, vectorLayer],
+				overlays : [overlay1, overlay2, overlay3, overlay4, overlay5, overlay6, overlay7, overlay8, overlay9, overlay10],
+				view : new ol.View(
+				{
+					projection : projection,
+					zoom : 17,
+					center : [470, 220]
+				})
+				// view: view
+			});
+			map.getView().on('change:resolution', function(evt)
+			{
+				var resolution = evt.target.get('resolution');
+				var units = map.getView().getProjection().getUnits();
+				var dpi = 25.4 / 0.28;
+				var mpu = ol.proj.METERS_PER_UNIT[units];
+				var scale = resolution * mpu * 39.37 * dpi;
+				if (scale >= 9500 && scale <= 950000)
+				{
+					scale = Math.round(scale / 1000) + "K";
+				}
+				else
+				if (scale >= 950000)
+				{
+					scale = Math.round(scale / 1000000) + "M";
+				}
+				else
+				{
+					scale = Math.round(scale);
+				}
+				moveToPoint(map, true);
+				// document.getElementById('scale').innerHTML = "Scale = 1 : " + scale;
+			});
+			// map.getView().fit(bounds, map.getSize());
+
+			fillArray();
+			map.on('singleclick', function(evt)
+			{
+
+				moveToPoint(map, true);
+				// document.getElementById('nodelist').innerHTML = "Loading... please wait...";
+				var view = map.getView();
+				var viewResolution = view.getResolution();
+				var source = untiled.get('visible') ? untiled.getSource() : tiled.getSource();
+				var url = source.getGetFeatureInfoUrl(evt.coordinate, viewResolution, view.getProjection(),
+				{
+					'INFO_FORMAT' : 'text/html',
+					'FEATURE_COUNT' : 50
+				});
+				if (url)
+				{
+					// document.getElementById('nodelist').innerHTML = '<iframe seamless src="' + url
+					// + '"></iframe>';
+				}
+			});
+
+			map.on('postcompose', function(event)
+			{
+				var vectorContext = event.vectorContext;
+				var frameState = event.frameState;
+
+				for (var i = 0; i < 10; i++)
+				{
+					if (arry[i].resfhCount > 0)
+					{
+						arry[i].old_x = arry[i].old_x + arry[i].offset_x;
+						arry[i].old_y = arry[i].old_y + arry[i].offset_y;
+						arry[i].resfhCount--;
+						arry[i].iconFeature.setGeometry(new ol.geom.Point([arry[i].old_x, arry[i].old_y]));
+						arry[i].iconStyle.getImage().setRotation(arry[i].angle);
+						// vectorContext.drawFeature(arry[i].iconFeature, arry[i].iconStyle);
+
+						switch(i)
+						{
+							case 0:
+								overlay1.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 1:
+								overlay2.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 2:
+								overlay3.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 3:
+								overlay4.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 4:
+								overlay5.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 5:
+								overlay6.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 6:
+								overlay7.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 7:
+								overlay8.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 8:
+								overlay9.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+							case 9:
+								overlay10.setPosition([arry[i].old_x, arry[i].old_y]);
+								break;
+						}						
+
+					}
+					vectorContext.drawFeature(arry[i].iconFeature, arry[i].iconStyle);
+					// else
+					// 	vectorContext.drawFeature(arry[i].iconFeature, arry[i].iconStyleNoarrow);
+				}
+				map.render();
+			});
+			map.render();
+			/*****************************************************************************************************/
+			function get()
+			{
+				// $('body').append('<scr'+'ipt
+				// src="http://192.168.1.33:5000/id_2_position?id=9"></sc'+'ript>');
+				ajax.abort();
+				//每次提交前, 先放弃上一次ajax的提交, 这样就不会同时有多个ajax正在请求, 卡死浏览器
+
+				ajax = $.ajax(
+				{
+					url : "http://192.168.1.33:5000/all_position"//请求的url
+					,
+					async : false,
+					dataType : "jsonp"
+					//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+					,
+					jsonp : "callback"
+					//自定义的jsonp回调函数名称"jsonpCallback"，返回的json也必须有这个函数名称
+					,
+					jsonpCallback : "jsonpCallback"
+					// , complete:function( data, textStatus, jqXHR )
+					// {
+					// console.info(textStatus);
+					// if(textStatus == "success")
+					// {
+					// 	console.info(data);
+					// }
+					// }
+				});
+
+				// carIndex++;
+				// if(carIndex>9) carIndex=1;
+
+			}
+
+			function Points(id, x, y)
+			{
+				this.id = id;
+				this.old_x = this.x;
+				this.old_y = this.y;
+				this.x = x;
+				this.y = y;
+				this.resfhCount = 0;
+				this.iconFeature = new ol.Feature(
+				{
+					geometry : new ol.geom.Point([152, -178]),
+					name : 'iconFeature' + id
+				});
+
+				this.iconStyle = new ol.style.Style(
+				{
+					image : new ol.style.Icon(/** @type {olx.style.IconOptions} */(
+						{
+							// anchor : [1, 1],
+							// anchorXUnits : 'pixels',
+							// anchorYUnits : 'fraction',
+							// opacity : 10,
+							// rotateWithView:true,
+							// scale:0.5,
+							src : 'sxkeda/resource/icon/icon1.png'
+						}))
+				});
+				this.iconStyleNoarrow = new ol.style.Style(
+				{
+					image : new ol.style.Icon(/** @type {olx.style.IconOptions} */(
+						{
+							// anchor : [1, 1],
+							// anchorXUnits : 'pixels',
+							// anchorYUnits : 'fraction',
+							// opacity : 10,
+							// rotateWithView:true,
+							// scale:0.5,
+							src : 'sxkeda/resource/icon/icon2.png'
+						}))
+				});
+				this.offset_x = 0;
+				this.offset_y = 0;
+				this.angle = 0;
+				console.info("addFeature");
+				// this.iconFeature.setStyle(this.iconStyle);
+				// vectorLayer.getSource().addFeature(this.iconFeature);
+			}
+
+			var ajax =
+			{
+				abort : function()
+				{
+				} //定义一个空的方法, 是为了下面ajax.abort()不报错
+			};
+			function fillArray()
+			{
+				for (var i = 0; i < 10; i++)
+					arry.push(new Points(i, 0, 0));
+			}
+
+			function jsonpCallback(data)//回调函数
+			{
+				// console.log(carIndex); //
+				var pointx = jQuery.parseJSON(JSON.stringify(data));
+				// console.info(pointx.values.length);
+
+				for (var i = 0; i < pointx.values.length; i++)
+				{
+					// console.info(i+"   x="+pointx.values[i].x+"  y="+pointx.values[i].y);
+
+					// arry[i].Points(i,pointx.values[i].x,pointx.values[i].y);
+
+					arry[i].old_x = arry[i].x;
+					arry[i].old_y = arry[i].y;
+
+					arry[i].x = pointx.values[i].x;
+					arry[i].y = pointx.values[i].y;
+					// console.info("old = "+arry[i].old_x+"  "+arry[i].old_y);
+					// console.info("new = "+arry[i].x+"  "+arry[i].y);
+
+					if ((arry[i].old_x != arry[i].x) || (arry[i].old_y != arry[i].y))
+					{
+						arry[i].offset_x = (arry[i].x - arry[i].old_x) / 20;
+						arry[i].offset_y = (arry[i].y - arry[i].old_y) / 20;
+						arry[i].resfhCount = 20;
+						arry[i].angle = Math.atan2(arry[i].offset_x, arry[i].offset_y);
+						console.info("angle = " + (180 / Math.PI) * Math.atan2(arry[i].offset_x, arry[i].offset_y));
+						// console.info("offset["+arry[i].offset_x+","+arry[i].offset_y+"]");
+					}
+					// arry[i].iconStyle.getImage().setRotation(Math.PI/180*90);
+				}
+				xxxxx = 0;
+				// console.info("arry[1] = "+arry[1].old_x+"  "+arry[1].old_y);
+
+				moveToPoint(map, false);
+
+			}
+
+			function moveToPoint(map, refash)
+			{
+				if ((arry[1].old_x != arry[1].x) || (arry[1].old_y != arry[1].y) || refash == true)
+				{
+					var london = [arry[1].x, arry[1].y];
+					console.info("moveToPoint");
+					var pan = ol.animation.pan(
+					{
+						duration : 1000,
+						source : (map.getView().getCenter())
+					});
+					console.info(map.getView().getCenter());
+					map.beforeRender(pan);
+					map.getView().setCenter(london);
+				}
+			}
+
+			var t2 = window.setInterval("get()", 1000);
+
+        </script>
+    </body>
+</html>
