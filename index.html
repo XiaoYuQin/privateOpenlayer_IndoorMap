@@ -89,7 +89,7 @@
         <div id="popup10" class="ol-popup">
             <div id="popup-content10"></div>
         </div>
-        <div id="map">
+        <div id="map"  >
             <!--             <div class="ol-toggle-options ol-unselectable">
             <a title="Toggle options toolbar" onClick="toggleControlPanel()" href="#toggle">...</a>
             </div> -->
@@ -203,6 +203,7 @@
 						anchorYUnits : 'fraction',
 						opacity : 10,
 						rotateWithView : true,
+						scale:0,
 						src : 'sxkeda/resource/icon/icon1.png'
 					}))
 			});
@@ -216,6 +217,7 @@
 						// opacity : 10,
 						// rotateWithView:true,
 						// scale:0.5,
+						scale:0,
 						src : 'sxkeda/resource/icon/icon2.png'
 					}))
 			});
@@ -385,7 +387,7 @@
 				{
 					projection : projection,
 					zoom : 17,
-					center : [470, 220]
+					center : [152, -148]
 				})
 				// view: view
 			});
@@ -628,19 +630,19 @@
 
 			function moveToPoint(map, refash)
 			{
-				if ((arry[1].old_x != arry[1].x) || (arry[1].old_y != arry[1].y) || refash == true)
-				{
-					var london = [arry[1].x, arry[1].y];
-					console.info("moveToPoint");
-					var pan = ol.animation.pan(
-					{
-						duration : 1000,
-						source : (map.getView().getCenter())
-					});
-					console.info(map.getView().getCenter());
-					map.beforeRender(pan);
-					map.getView().setCenter(london);
-				}
+				// if ((arry[1].old_x != arry[1].x) || (arry[1].old_y != arry[1].y) || refash == true)
+				// {
+					// var london = [arry[1].x, arry[1].y];
+					// console.info("moveToPoint");
+					// var pan = ol.animation.pan(
+					// {
+						// duration : 1000,
+						// source : (map.getView().getCenter())
+					// });
+					// console.info(map.getView().getCenter());
+					// map.beforeRender(pan);
+					// map.getView().setCenter(london);
+				// }
 			}
 
 			var t2 = window.setInterval("get()", 1000);
