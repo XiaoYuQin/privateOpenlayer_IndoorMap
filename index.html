@@ -11,7 +11,14 @@
         <script type="text/javascript" src="jquery/jquery-1.8.3.js"></script>
         <script type="text/javascript" src="openlayer/ol.js" ></script>
         <!-- <title>OpenLayers map preview</title> -->
-
+        <style type="text/css">
+			html, body, .map {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+			}
+        </style>
         <style>
 			.ol-popup {
 				position: absolute;
@@ -89,11 +96,7 @@
         <div id="popup10" class="ol-popup">
             <div id="popup-content10"></div>
         </div>
-        <div id="map"  >
-            <!--             <div class="ol-toggle-options ol-unselectable">
-            <a title="Toggle options toolbar" onClick="toggleControlPanel()" href="#toggle">...</a>
-            </div> -->
-        </div>
+        <div id="map" class="map"></div>
         <!-- <button onclick="get()">获得位置</button> -->
         <!--         <div id="wrapper">
         <div id="location"></div>
@@ -203,7 +206,7 @@
 						anchorYUnits : 'fraction',
 						opacity : 10,
 						rotateWithView : true,
-						scale:0,
+						scale : 0,
 						src : 'sxkeda/resource/icon/icon1.png'
 					}))
 			});
@@ -217,7 +220,7 @@
 						// opacity : 10,
 						// rotateWithView:true,
 						// scale:0.5,
-						scale:0,
+						scale : 0,
 						src : 'sxkeda/resource/icon/icon2.png'
 					}))
 			});
@@ -436,11 +439,12 @@
 					// + '"></iframe>';
 				}
 			});
-
+            
 			map.on('postcompose', function(event)
 			{
 				var vectorContext = event.vectorContext;
 				var frameState = event.frameState;
+
 
 				for (var i = 0; i < 10; i++)
 				{
@@ -485,7 +489,7 @@
 							case 9:
 								overlay10.setPosition([arry[i].old_x, arry[i].old_y]);
 								break;
-						}						
+						}
 
 					}
 					vectorContext.drawFeature(arry[i].iconFeature, arry[i].iconStyle);
@@ -630,18 +634,19 @@
 
 			function moveToPoint(map, refash)
 			{
-				// if ((arry[1].old_x != arry[1].x) || (arry[1].old_y != arry[1].y) || refash == true)
+				// if ((arry[1].old_x != arry[1].x) || (arry[1].old_y != arry[1].y) || refash ==
+				// true)
 				// {
-					// var london = [arry[1].x, arry[1].y];
-					// console.info("moveToPoint");
-					// var pan = ol.animation.pan(
-					// {
-						// duration : 1000,
-						// source : (map.getView().getCenter())
-					// });
-					// console.info(map.getView().getCenter());
-					// map.beforeRender(pan);
-					// map.getView().setCenter(london);
+				// var london = [arry[1].x, arry[1].y];
+				// console.info("moveToPoint");
+				// var pan = ol.animation.pan(
+				// {
+				// duration : 1000,
+				// source : (map.getView().getCenter())
+				// });
+				// console.info(map.getView().getCenter());
+				// map.beforeRender(pan);
+				// map.getView().setCenter(london);
 				// }
 			}
 
