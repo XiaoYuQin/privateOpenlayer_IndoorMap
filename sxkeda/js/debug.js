@@ -13,3 +13,6 @@ debug.d = function(str){
 debug.e = function(str){  
     console.error(str);
 };
+
+var isDebugTrackLights = false;
+var isDebugTrackLight = false;

@@ -1,0 +1,41 @@
+.ol-popup {
+	position: absolute;
+	background-color: #0099cc;
+	-webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+	filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+	padding: 10px;/*气泡大小*/
+	border-radius: 10px; /*圆弧弧度*/
+	border: 1px solid #cccccc; /*边框粗度和颜色*/
+	bottom: 12px;/*气泡上面弧度正方形距离底边的高度*/
+	left: -12px;/*气泡距离点击点的位置*/
+}
+.ol-popup:after, .ol-popup:before {
+	top: 100%; /*底部三角形的位置在整个气泡上的相对位置*/
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.ol-popup:after {
+	border-top-color: #0099cc;
+	border-width: 7px; /*底部三角形的尺寸*/
+	left: 18px;/*底部三角形的水平位置*/
+	margin-left: -10px;
+}
+.ol-popup:before {
+	border-top-color: #cccccc;
+	border-width: 8px;
+	left: 18px;
+	margin-left: -11px;
+}
+/*.ol-popup-closer {
+ text-decoration: none;
+ position: absolute;
+ top: 2px;
+ right: 8px;
+ }
+ .ol-popup-closer:after {
+ content: "✖";
+ }*/

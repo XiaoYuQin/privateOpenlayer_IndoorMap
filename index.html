@@ -1,15 +1,27 @@
-<!doctype html>
+	<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="Access-Control-Allow-Origin" content="*">
         <!-- <link rel="stylesheet" href="file:///android_asset/ol.css" type="text/css"> -->
         <link type="text/css" rel="stylesheet" href="openlayer/ol.css" >
+        <link type="text/css" rel="stylesheet" href="sxkeda/CSS/trackLigh.css">
+        <link type="text/css" rel="stylesheet" href="sxkeda/CSS/CircleArrow.css" />
+        <link type="text/css" rel="stylesheet" href="sxkeda/js/OverviewMap.css"/>
 
         <!-- <script type="text/javascript" src="file:///android_asset/jquery-1.8.3.js"></script> -->
         <!-- <script src="file:///android_asset/ol.js" type="text/javascript"></script> -->
         <script type="text/javascript" src="jquery/jquery-1.8.3.js"></script>
         <script type="text/javascript" src="openlayer/ol.js" ></script>
+        <script type="text/javascript" src="sxkeda/js/testImgRotationAnimation.js"></script>
+        <script type="text/javascript" src="sxkeda/js/debug.js"></script>
+        <script type="text/javascript" src="sxkeda/js/TrackLights.js"></script>
+        <script type="text/javascript" src="sxkeda/js/TrackLight.js"></script>
+		<script type="text/javascript" src="sxkeda/js/Popups.js"></script>
+		<script type="text/javascript" src="sxkeda/js/Popup.js"></script>
+		<script type="text/javascript" src="sxkeda/js/OverviewMap.js"></script>
+
+
         <!-- <title>OpenLayers map preview</title> -->
         <style type="text/css">
 			html, body, .map {
@@ -19,150 +31,23 @@
 				height: 100%;
 			}
         </style>
-        <style>
-			.ol-popup {
-				position: absolute;
-				background-color: #0099cc;
-				-webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-				filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-				padding: 10px;/*气泡大小*/
-				border-radius: 10px; /*圆弧弧度*/
-				border: 1px solid #cccccc; /*边框粗度和颜色*/
-				bottom: 12px;/*气泡上面弧度正方形距离底边的高度*/
-				left: -12px;/*气泡距离点击点的位置*/
-			}
-			.ol-popup:after, .ol-popup:before {
-				top: 100%; /*底部三角形的位置在整个气泡上的相对位置*/
-				border: solid transparent;
-				content: " ";
-				height: 0;
-				width: 0;
-				position: absolute;
-				pointer-events: none;
-			}
-			.ol-popup:after {
-				border-top-color: #0099cc;
-				border-width: 7px; /*底部三角形的尺寸*/
-				left: 18px;/*底部三角形的水平位置*/
-				margin-left: -10px;
-			}
-			.ol-popup:before {
-				border-top-color: #cccccc;
-				border-width: 8px;
-				left: 18px;
-				margin-left: -11px;
-			}
-			/*.ol-popup-closer {
-			 text-decoration: none;
-			 position: absolute;
-			 top: 2px;
-			 right: 8px;
-			 }
-			 .ol-popup-closer:after {
-			 content: "✖";
-			 }*/
-
-        </style>
-
     </head>
     <body>
-        <div id="popup1" class="ol-popup">
-            <div id="popup-content1"></div>
+        <div id="wrapper">
+            <!-- <div id="location"></div> -->
+            <!-- <div id="scale"></div>
+            <div id="nodelist">
+            <em>Click on the map to get feature info</em>
+            </div> -->
         </div>
-        <div id="popup2" class="ol-popup">
-            <div id="popup-content2"></div>
-        </div>
-        <div id="popup3" class="ol-popup">
-            <div id="popup-content3"></div>
-        </div>
-        <div id="popup4" class="ol-popup">
-            <div id="popup-content4"></div>
-        </div>
-        <div id="popup5" class="ol-popup">
-            <div id="popup-content5"></div>
-        </div>
-        <div id="popup6" class="ol-popup">
-            <div id="popup-content6"></div>
-        </div>
-        <div id="popup7" class="ol-popup">
-            <div id="popup-content7"></div>
-        </div>
-        <div id="popup8" class="ol-popup">
-            <div id="popup-content8"></div>
-        </div>
-        <div id="popup9" class="ol-popup">
-            <div id="popup-content9"></div>
-        </div>
-        <div id="popup10" class="ol-popup">
-            <div id="popup-content10"></div>
-        </div>
+  
         <div id="map" class="map"></div>
         <!-- <button onclick="get()">获得位置</button> -->
-        <!--         <div id="wrapper">
-        <div id="location"></div>
-        <div id="scale"></div>
-        <div id="nodelist">
-        <em>Click on the map to get feature info</em>
-        </div>
-        </div> -->
+
         <script type="text/javascript">
 			var pureCoverage = false;
 			var arry = new Array();
-			/**
-			 * Elements that make up the popup.
-			 */
-			var container1 = document.getElementById('popup1');
-			var content1 = document.getElementById('popup-content1');
-			content1.innerHTML = '0';
-			content1.style.color = "#ffffff";
-			var container2 = document.getElementById('popup2');
-			var content2 = document.getElementById('popup-content2');
-			content2.innerHTML = '1';
-			content2.style.color = "#ffffff";
-			var container3 = document.getElementById('popup3');
-			var content3 = document.getElementById('popup-content3');
-			content3.innerHTML = '2';
-			content3.style.color = "#ffffff";
-			var container4 = document.getElementById('popup4');
-			var content4 = document.getElementById('popup-content4');
-			content4.innerHTML = '3';
-			content4.style.color = "#ffffff";
-			var container5 = document.getElementById('popup5');
-			var content5 = document.getElementById('popup-content5');
-			content5.innerHTML = '4';
-			content5.style.color = "#ffffff";
-			var container6 = document.getElementById('popup6');
-			var content6 = document.getElementById('popup-content6');
-			content6.innerHTML = '5';
-			content6.style.color = "#ffffff";
-			var container7 = document.getElementById('popup7');
-			var content7 = document.getElementById('popup-content7');
-			content7.innerHTML = '6';
-			content7.style.color = "#ffffff";
-			var container8 = document.getElementById('popup8');
-			var content8 = document.getElementById('popup-content8');
-			content8.innerHTML = '7';
-			content8.style.color = "#ffffff";
-			var container9 = document.getElementById('popup9');
-			var content9 = document.getElementById('popup-content9');
-			content9.innerHTML = '8';
-			content9.style.color = "#ffffff";
-			var container10 = document.getElementById('popup10');
-			var content10 = document.getElementById('popup-content10');
-			content10.innerHTML = '9';
-			content10.style.color = "#ffffff";
-			// var closer = document.getElementById('popup-closer');
-
-			/**
-			 * Add a click handler to hide the popup.
-			 * @return {boolean} Don't follow the href.
-			 */
-			// closer.onclick = function()
-			// {
-			// overlay.setPosition(undefined);
-			// closer.blur();
-			// return false;
-			// };
+	
 
 			console.log("Hello World");
 			// if this is just a coverage or a group of them, disable a few items,
@@ -246,99 +131,7 @@
 				// coordinateFormat : ol.coordinate.createStringXY(5),
 				// undefinedHTML : '&nbsp;'
 			});
-			/**
-			 * Create an overlay to anchor the popup to the map.
-			 */
-			var overlay1 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container1,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay2 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container2,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay3 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container3,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay4 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container4,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay5 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container5,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay6 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container6,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay7 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container7,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay8 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container8,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay9 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container9,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
-			var overlay10 = new ol.Overlay(/** @type {olx.OverlayOptions} */(
-				{
-					element : container10,
-					autoPan : true,
-					autoPanAnimation :
-					{
-						duration : 250
-					}
-				}));
+			
 			var untiled = new ol.layer.Image(
 			{
 				source : new ol.source.ImageWMS(
@@ -371,6 +164,10 @@
 				})
 			});
 			fillArray();
+
+
+
+
 			var projection = new ol.proj.Projection(
 			{
 				code : 'EPSG:54012',
@@ -382,10 +179,10 @@
 				controls : ol.control.defaults(
 				{
 					attribution : false
-				}),
+				}).extend([/*mousePositionControl, */new ol.control.OverviewMap()]),
 				target : 'map',
 				layers : [untiled, tiled, vectorLayer],
-				overlays : [overlay1, overlay2, overlay3, overlay4, overlay5, overlay6, overlay7, overlay8, overlay9, overlay10],
+				// overlays : [overlay1, overlay2, overlay3, overlay4, overlay5, overlay6, overlay7, overlay8, overlay9, overlay10],
 				view : new ol.View(
 				{
 					projection : projection,
@@ -394,6 +191,35 @@
 				})
 				// view: view
 			});
+
+			var trackLights = TrackLights.new(vectorLayer);
+			// trackLights.setSchedule(3,1000);
+			trackLights.add(2,0,-150);
+			trackLights.add(3,0,100);
+			trackLights.add(4,0,200);
+
+
+			trackLights.setSchedule(2,2000);
+			trackLights.setSchedule(3,1000);
+			trackLights.setSchedule(4,1500);
+
+
+			// var popup = Popup.new();
+			// popup.init(map,12);
+			// // popup.addOvelayToMap(map);
+			// popup.setPosition(100,100);
+
+
+			var popups = Popups.new(map);			
+			for(var i = 0;i<11;i++)
+			{
+				popups.add(i,0,0);
+			}
+
+
+
+			// trackLights.remove(1);
+
 			map.getView().on('change:resolution', function(evt)
 			{
 				var resolution = evt.target.get('resolution');
@@ -401,6 +227,8 @@
 				var dpi = 25.4 / 0.28;
 				var mpu = ol.proj.METERS_PER_UNIT[units];
 				var scale = resolution * mpu * 39.37 * dpi;
+				
+				
 				if (scale >= 9500 && scale <= 950000)
 				{
 					scale = Math.round(scale / 1000) + "K";
@@ -422,8 +250,11 @@
 			fillArray();
 			map.on('singleclick', function(evt)
 			{
-
-				moveToPoint(map, true);
+				// trackLights.remove(4);
+				// popup.removeOvelayFromMap();
+				// popups.remove(1);
+				// trackLights.displayAllTraceLight();
+				// moveToPoint(map, true);
 				// document.getElementById('nodelist').innerHTML = "Loading... please wait...";
 				var view = map.getView();
 				var viewResolution = view.getResolution();
@@ -439,58 +270,28 @@
 					// + '"></iframe>';
 				}
 			});
-            
+
 			map.on('postcompose', function(event)
 			{
 				var vectorContext = event.vectorContext;
 				var frameState = event.frameState;
 
+				// arry[1].angle = arry[1].angle + 1;
+				// if (arry[1].angle > 360)
+				// 	arry[1].angle = 0;
+				// setIconRoationAngle(vectorContext, arry[1].iconFeature, arry[1].iconStyle, arry[1].angle);
 
 				for (var i = 0; i < 10; i++)
 				{
 					if (arry[i].resfhCount > 0)
 					{
+						// console.info(i);
 						arry[i].old_x = arry[i].old_x + arry[i].offset_x;
 						arry[i].old_y = arry[i].old_y + arry[i].offset_y;
 						arry[i].resfhCount--;
 						arry[i].iconFeature.setGeometry(new ol.geom.Point([arry[i].old_x, arry[i].old_y]));
 						arry[i].iconStyle.getImage().setRotation(arry[i].angle);
-						// vectorContext.drawFeature(arry[i].iconFeature, arry[i].iconStyle);
-
-						switch(i)
-						{
-							case 0:
-								overlay1.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 1:
-								overlay2.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 2:
-								overlay3.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 3:
-								overlay4.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 4:
-								overlay5.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 5:
-								overlay6.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 6:
-								overlay7.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 7:
-								overlay8.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 8:
-								overlay9.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-							case 9:
-								overlay10.setPosition([arry[i].old_x, arry[i].old_y]);
-								break;
-						}
-
+						popups.popupArray[i].setPosition(arry[i].old_x,arry[i].old_y);
 					}
 					vectorContext.drawFeature(arry[i].iconFeature, arry[i].iconStyle);
 					// else
@@ -537,11 +338,13 @@
 			function Points(id, x, y)
 			{
 				this.id = id;
+				this.x = 0;
+				this.y = 0;
 				this.old_x = this.x;
 				this.old_y = this.y;
 				this.x = x;
 				this.y = y;
-				this.resfhCount = 0;
+				this.resfhCount = 20;
 				this.iconFeature = new ol.Feature(
 				{
 					geometry : new ol.geom.Point([152, -178]),

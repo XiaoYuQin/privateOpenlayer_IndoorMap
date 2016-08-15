@@ -1,19 +1,41 @@
-var popups = new Array();
-var popupsCount = 0;
-function popup()
+var Popups = 
 {
-	var objdiv = document.createElement("DIV");
-	var objname = "shop_" + i;
-	objdiv.id = objname;
-	objdiv.class = "ol-popup";
-	objdiv.innerHTML = "SHOP_" + i;
-	
-	document.body.appendChild(objdiv);
-	
+	new:function(map)
+	{
+		var instence = {};
+		instence.popupArray = new Array();
+		instence.map = map;
+
+		//初始化
+		instence.init = function(map)
+		{
+			instence.map = map;
+		};
+		//自动从列表中添加一个气泡
+		instence.add = function(id,x,y)
+		{
+			var popup = Popup.new();
+			popup.init(instence.map,id);
+			popup.setPosition(x,y);
+			instence.popupArray.push(popup);
+		}
+		//从地图中删除一个气泡
+		instence.remove = function(id)
+		{
+			for (var i = 0; i < instence.popupArray.length; i++)
+			{
+				if(instence.popupArray[i].id == id)
+				{
+					instence.popupArray[i].removeOvelayFromMap();
+					instence.popupArray.splice(i);
+					break;
+				}
+			}					
+		}
+		return instence;
+	}
 }
 
-function fillPopups()
-{
 
-}
+
 
