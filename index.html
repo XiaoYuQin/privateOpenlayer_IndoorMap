@@ -165,6 +165,15 @@
 			});
 			fillArray();
 
+			var overviewMapControl = new ol.control.OverviewMap({
+				// see in overviewmap-custom.html to see the custom CSS used
+				className: 'ol-overviewmap ol-custom-overviewmap',
+				layers: [
+					untiled, tiled
+				],
+
+			});
+
 
 
 
@@ -179,7 +188,7 @@
 				controls : ol.control.defaults(
 				{
 					attribution : false
-				}).extend([/*mousePositionControl, */new ol.control.OverviewMap()]),
+				}).extend([/*mousePositionControl, */overviewMapControl]),
 				target : 'map',
 				layers : [untiled, tiled, vectorLayer],
 				// overlays : [overlay1, overlay2, overlay3, overlay4, overlay5, overlay6, overlay7, overlay8, overlay9, overlay10],
